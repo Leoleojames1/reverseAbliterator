@@ -67,7 +67,8 @@ def perform_reverse_ablation(
     return output
 
 # Set up the Gradio interface
-base_dir = os.path.dirname(os.path.dirname(os.getcwd()))
+base_dir = os.path.dirname(os.getcwd())
+# base_dir = os.path.dirname(os.path.dirname(os.getcwd()))
 available_models = get_available_models(base_dir)
 
 iface = gr.Interface(
