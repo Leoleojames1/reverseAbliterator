@@ -7,6 +7,9 @@ This project explores abliteration and reverse abliteration, two innovative tech
 
 ## Core Concepts 💡
 
+1. Abliteration suppresses the desired style directions.
+2. Reverse Abliteration amplifies the desired style directions.
+
 ### Abliteration 🚫
 
 Abliteration is designed to selectively suppress specific behaviors or capabilities of a language model while preserving its overall functionality.
