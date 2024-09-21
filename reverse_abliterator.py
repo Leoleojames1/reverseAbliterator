@@ -299,3 +299,42 @@ def prepare_dataset(dataset: Tuple[List[str], List[str]]|List[str]) -> Tuple[Lis
         train, test = train_test_split(dataset, test_size=0.1, random_state=42)
     else:
         train, test = dataset
+    return train, test
+
+if __name__ == "__main__":
+    # Example usage of ReverseAbliterator
+    
+    # Define your model path and datasets
+    model_path = "path/to/your/model"
+    target_instructions = ["Write a poem about nature", "Explain quantum physics", "Describe the process of photosynthesis"]
+    baseline_instructions = ["Hello", "What's the weather like?", "Tell me a joke"]
+
+    # Initialize ReverseAbliterator
+    reverse_abliterator = ReverseAbliterator(
+        model=model_path,
+        dataset=([target_instructions, baseline_instructions]),
+        device="cuda" if torch.cuda.is_available() else "cpu"
+    )
+
+    # Cache activations
+    reverse_abliterator.cache_activations(N=len(target_instructions), batch_size=1)
+
+    # Measure initial enhancement
+    initial_enhancement = reverse_abliterator.measure_enhancement()
+    print("Initial enhancement score:", initial_enhancement)
+
+    # Enhance the model
+    reverse_abliterator.enhance_model(strength=0.1)  # Start with a small strength
+
+    # Measure enhancement after modification
+    post_enhancement = reverse_abliterator.measure_enhancement()
+    print("Post-enhancement score:", post_enhancement)
+
+    # Test the enhanced model
+    print("Testing enhanced model responses:")
+    reverse_abliterator.test_enhancement(N=3, max_tokens_generated=30)
+
+    # Save the modified model state if desired
+    reverse_abliterator.save_activations("enhanced_model_state.pt")
+
+    print("Reverse abliteration process complete.")
