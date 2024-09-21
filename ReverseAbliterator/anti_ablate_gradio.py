@@ -2,15 +2,29 @@ import os
 import torch
 import gradio as gr
 from typing import List, Tuple
-from ReverseAbliterator import ReverseAbliterator, prepare_dataset
+from reverse_abliterator import ReverseAbliterator
 
 def get_available_models(base_dir: str) -> List[str]:
     models = []
-    for root, dirs, files in os.walk(base_dir):
-        for dir in dirs:
-            if os.path.isfile(os.path.join(root, dir, 'pytorch_model.bin')):
-                models.append(os.path.join(root, dir))
+    # Go up two directories from the current working directory to reach the model_git directory
+    root_dir = os.path.dirname(os.path.dirname(os.getcwd()))
+    
+    # List all directories in the root_dir
+    for dir_name in os.listdir(root_dir):
+        dir_path = os.path.join(root_dir, dir_name)
+        if os.path.isdir(dir_path):
+            # Check if the directory contains any .safetensors files
+            if any(file.endswith('.safetensors') for file in os.listdir(dir_path)):
+                models.append(dir_name)
+    
     return models
+
+# Update the base_dir assignment
+base_dir = os.path.dirname(os.path.dirname(os.getcwd()))
+available_models = get_available_models(base_dir)
+
+# Print available models for debugging
+print("Available models:", available_models)
 
 def perform_reverse_ablation(
     model_path: str,
@@ -20,6 +34,7 @@ def perform_reverse_ablation(
     num_test_samples: int,
     max_tokens_generated: int
 ) -> str:
+    full_model_path = os.path.join(base_dir, model_path)
     # Prepare the dataset
     target_instr = target_instructions.split('\n')
     baseline_instr = baseline_instructions.split('\n')
@@ -27,7 +42,7 @@ def perform_reverse_ablation(
 
     # Initialize ReverseAbliterator
     reverse_abliterator = ReverseAbliterator(
-        model=model_path,
+        model=full_model_path,
         dataset=dataset,
         device="cuda" if torch.cuda.is_available() else "cpu"
     )
@@ -67,7 +82,7 @@ def perform_reverse_ablation(
     return output
 
 # Set up the Gradio interface
-base_dir = os.path.dirname(os.getcwd())
+base_dir = os.path.dirname(os.path.dirname(os.getcwd()))
 # base_dir = os.path.dirname(os.path.dirname(os.getcwd()))
 available_models = get_available_models(base_dir)
 
