@@ -2,7 +2,8 @@
 
 ## Introduction 🌟
 
-This README explores abliteration and reverse abliteration, two innovative techniques for modifying pre-trained language models. These methods offer targeted approaches to altering model behavior, complementing traditional fine-tuning techniques.
+This project explores abliteration and reverse abliteration, two innovative techniques for modifying pre-trained language models. These methods offer targeted approaches to altering model behavior, complementing traditional fine-tuning techniques. This tool is a reverse construction of FailSpy's abliterator repo which you can check out here:
+[FailSpy/abliterator](https://github.com/FailSpy/abliterator)
 
 ## Core Concepts 💡
 
