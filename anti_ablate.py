@@ -1,0 +1,89 @@
+import os
+import torch
+import gradio as gr
+from typing import List, Tuple
+from ReverseAbliterator import ReverseAbliterator, prepare_dataset
+
+def get_available_models(base_dir: str) -> List[str]:
+    models = []
+    for root, dirs, files in os.walk(base_dir):
+        for dir in dirs:
+            if os.path.isfile(os.path.join(root, dir, 'pytorch_model.bin')):
+                models.append(os.path.join(root, dir))
+    return models
+
+def perform_reverse_ablation(
+    model_path: str,
+    target_instructions: str,
+    baseline_instructions: str,
+    enhancement_strength: float,
+    num_test_samples: int,
+    max_tokens_generated: int
+) -> str:
+    # Prepare the dataset
+    target_instr = target_instructions.split('\n')
+    baseline_instr = baseline_instructions.split('\n')
+    dataset = ([target_instr, baseline_instr])
+
+    # Initialize ReverseAbliterator
+    reverse_abliterator = ReverseAbliterator(
+        model=model_path,
+        dataset=dataset,
+        device="cuda" if torch.cuda.is_available() else "cpu"
+    )
+
+    # Cache activations
+    reverse_abliterator.cache_activations(N=len(target_instr), batch_size=1)
+
+    # Measure initial enhancement
+    initial_enhancement = reverse_abliterator.measure_enhancement()
+    
+    # Enhance the model
+    reverse_abliterator.enhance_model(strength=enhancement_strength)
+
+    # Measure enhancement after modification
+    post_enhancement = reverse_abliterator.measure_enhancement()
+
+    # Test the enhanced model
+    test_results = []
+    for prompts in reverse_abliterator.target_inst_test[:num_test_samples]:
+        toks = reverse_abliterator.tokenize_instructions_fn([prompts])
+        _, all_toks = reverse_abliterator.generate_logits(toks, max_tokens_generated=max_tokens_generated)
+        response = reverse_abliterator.model.tokenizer.decode(all_toks[0], skip_special_tokens=True)
+        test_results.append(f"Prompt: {prompts}\nResponse: {response}\n")
+
+    # Save the modified model
+    new_model_name = os.path.basename(model_path) + "_anti-ablated"
+    new_model_path = os.path.join(os.path.dirname(os.path.dirname(model_path)), new_model_name)
+    os.makedirs(new_model_path, exist_ok=True)
+    reverse_abliterator.save_activations(os.path.join(new_model_path, "enhanced_model_state.pt"))
+
+    # Prepare the output
+    output = f"Initial enhancement score: {initial_enhancement['enhancement'].item():.4f}\n"
+    output += f"Post-enhancement score: {post_enhancement['enhancement'].item():.4f}\n\n"
+    output += "Test Results:\n" + "\n".join(test_results)
+    output += f"\nEnhanced model saved to: {new_model_path}"
+
+    return output
+
+# Set up the Gradio interface
+base_dir = os.path.dirname(os.path.dirname(os.getcwd()))
+available_models = get_available_models(base_dir)
+
+iface = gr.Interface(
+    fn=perform_reverse_ablation,
+    inputs=[
+        gr.Dropdown(choices=available_models, label="Select Model"),
+        gr.Textbox(lines=5, label="Target Instructions (one per line)"),
+        gr.Textbox(lines=5, label="Baseline Instructions (one per line)"),
+        gr.Slider(minimum=0.01, maximum=1.0, step=0.01, value=0.1, label="Enhancement Strength"),
+        gr.Slider(minimum=1, maximum=10, step=1, value=3, label="Number of Test Samples"),
+        gr.Slider(minimum=10, maximum=100, step=10, value=30, label="Max Tokens Generated"),
+    ],
+    outputs=gr.Textbox(label="Results", lines=10),
+    title="Reverse Abliterator",
+    description="Select a model and perform reverse ablation to enhance specific capabilities."
+)
+
+if __name__ == "__main__":
+    iface.launch()
