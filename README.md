@@ -1,4 +1,4 @@
-# Reverse Abliteration: Advanced Technique for AI Model Modification 🧠🔧
+# Reverse Abliteration: 🧠Advanced Technique for AI Model Modification 🔧
 
 ## Introduction 🌟
 
