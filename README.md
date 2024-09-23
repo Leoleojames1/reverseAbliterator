@@ -108,7 +108,7 @@ These innovative approaches complement traditional fine-tuning, offering a spect
 You can install the Reverse Abliterator package using pip:
 
 ```
-pip install reverse-abliterator
+pip install reverseAbliterator
 ```
 
 ## Usage
