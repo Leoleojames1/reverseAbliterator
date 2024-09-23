@@ -1,5 +1,9 @@
 # Reverse Abliteration: Advanced Technique for AI Model Modification🧠🔧
 
+[![PyPI version](https://badge.fury.io/py/reverse-abliterator.svg)](https://badge.fury.io/py/reverse-abliterator)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![GitHub issues](https://img.shields.io/github/issues/leoleojames1/reverse-abliterator)](https://github.com/leoleojames1/reverse-abliterator/issues)
+
 ## Introduction 🌟
 
 This project explores abliteration and reverse abliteration, two innovative techniques for modifying pre-trained language models. These methods offer targeted approaches to altering model behavior, complementing traditional fine-tuning techniques. This tool is a reverse construction of FailSpy's abliterator repo which you can check out here:
@@ -142,6 +146,11 @@ ra.test_enhancement(N=2, max_tokens_generated=30)
 ra.save_modified_model("path/to/save/modified_model.pth")
 ```
 
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
 ## License
 
-This project is licensed under the Apache 2.0 License - see the LICENSE file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
