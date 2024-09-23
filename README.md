@@ -116,7 +116,7 @@ pip install reverseAbliterator
 Here's a basic example of how to use the Reverse Abliterator:
 
 ```python
-from reverse_abliterator import ReverseAbliterator
+from reverseAbliterator import ReverseAbliterator
 
 model_path = "path/to/your/model"
 target_instructions = ["Write a poem about nature", "Explain quantum physics"]
