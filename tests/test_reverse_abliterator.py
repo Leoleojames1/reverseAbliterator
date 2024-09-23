@@ -1,5 +1,5 @@
 import unittest
-from src.reverse_abliterator.reverse_abliterator import ReverseAbliterator
+from src.reverse_abliterator.reverseAbliterator import ReverseAbliterator
 
 class TestReverseAbliterator(unittest.TestCase):
     def setUp(self):
