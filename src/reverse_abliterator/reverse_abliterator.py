@@ -302,6 +302,61 @@ class ReverseAbliterator:
             train, test = dataset
         return train, test
 
+    def enhance_model(
+        self,
+        layers: List[int] = None,
+        W_O: bool = True,
+        mlp: bool = True,
+        strength: float = 1.0,
+    ):
+        enhancement_directions = self.enhancement_dirs()
+        self.apply_enhancement_dirs(
+            list(enhancement_directions.values()),
+            W_O=W_O,
+            mlp=mlp,
+            layers=layers,
+            strength=strength
+        )
+        self.modified = True  # Set the modified flag
+
+    def save_modified_model(self, save_path: str):
+        """
+        Save the modified model to the specified path.
+        
+        :param save_path: The path where the model should be saved
+        """
+        if not self.modified:
+            print("Warning: The model has not been modified. Saving the original model.")
+        
+        # Create the directory if it doesn't exist
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+        
+        # Save the entire model state
+        torch.save(self.model.state_dict(), save_path)
+        print(f"Model saved to {save_path}")
+
+    def load_modified_model(self, load_path: str):
+        """
+        Load a previously saved modified model.
+        
+        :param load_path: The path from which to load the model
+        """
+        if not os.path.exists(load_path):
+            raise FileNotFoundError(f"No model found at {load_path}")
+        
+        state_dict = torch.load(load_path, map_location=self.model.device)
+        self.model.load_state_dict(state_dict)
+        self.modified = True
+        print(f"Model loaded from {load_path}")
+
+    def reset_model(self):
+        """
+        Reset the model to its original state.
+        """
+        self.model.load_state_dict(self.original_state)
+        self.modified = False
+        print("Model reset to original state")
+
 if __name__ == "__main__":
     # Example usage of ReverseAbliterator
     

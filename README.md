@@ -102,3 +102,46 @@ Limitations:
 Abliteration and reverse abliteration represent sophisticated approaches to selectively modifying language model behavior. By offering more targeted and potentially more efficient ways to adjust model behavior, these methods open up new possibilities for customizing and improving AI systems. As research progresses, these techniques may lead to more adaptable, specialized, and capable AI models, while also presenting important challenges in terms of stability, ethics, and validation that need careful consideration.
 
 These innovative approaches complement traditional fine-tuning, offering a spectrum of model modification techniques that can be tailored to specific needs and constraints. As the field of AI continues to evolve, abliteration and reverse abliteration stand as promising tools for creating more nuanced and controllable AI systems. 🚀🤖
+
+## Installation
+
+You can install the Reverse Abliterator package using pip:
+
+```
+pip install reverse-abliterator
+```
+
+## Usage
+
+Here's a basic example of how to use the Reverse Abliterator:
+
+```python
+from reverse_abliterator import ReverseAbliterator
+
+model_path = "path/to/your/model"
+target_instructions = ["Write a poem about nature", "Explain quantum physics"]
+baseline_instructions = ["Hello", "What's the weather like?"]
+
+ra = ReverseAbliterator(
+    model=model_path,
+    dataset=([target_instructions, baseline_instructions]),
+    device="cuda" if torch.cuda.is_available() else "cpu"
+)
+
+ra.cache_activations(N=len(target_instructions), batch_size=1)
+initial_enhancement = ra.measure_enhancement()
+print("Initial enhancement score:", initial_enhancement)
+
+ra.enhance_model(strength=0.1)
+post_enhancement = ra.measure_enhancement()
+print("Post-enhancement score:", post_enhancement)
+
+ra.test_enhancement(N=2, max_tokens_generated=30)
+
+# Save the modified model
+ra.save_modified_model("path/to/save/modified_model.pth")
+```
+
+## License
+
+This project is licensed under the Apache 2.0 License - see the LICENSE file for details.
