@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "reverse_abliterator"
+name = "reverseAbliterator"
 version = "0.1.0"
 authors = [
   { name="Leo Borcherding", email="borchink@gmail.com" },
@@ -29,13 +29,13 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/leoleojames1/reverse-abliterator"
-"Bug Tracker" = "https://github.com/leoleojames1/reverse-abliterator/issues"
-"Source" = "https://github.com/leoleojames1/reverse-abliterator"
+"Homepage" = "https://github.com/leoleojames1/reverseAbliterator"
+"Bug Tracker" = "https://github.com/leoleojames1/reverseAbliterator/issues"
+"Source" = "https://github.com/leoleojames1/reverseAbliterator"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["reverse_abliterator*"]
+include = ["reverseAbliterator*"]
 namespaces = false
 
 [tool.setuptools]
