@@ -1,8 +1,8 @@
 # Reverse Abliteration: Advanced Technique for AI Model Modification🧠🔧
 
-[![PyPI version](https://badge.fury.io/py/reverse-abliterator.svg)](https://badge.fury.io/py/reverse-abliterator)
+[![PyPI version](https://badge.fury.io/py/reverseAbliterator.svg)](https://badge.fury.io/py/reverseAbliterator)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![GitHub issues](https://img.shields.io/github/issues/leoleojames1/reverse-abliterator)](https://github.com/leoleojames1/reverse-abliterator/issues)
+[![GitHub issues](https://img.shields.io/github/issues/leoleojames1/reverseAbliterator)](https://github.com/leoleojames1/reverseAbliterator/issues)
 
 ## Introduction 🌟
 
